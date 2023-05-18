@@ -11,9 +11,17 @@
 #' @useDynLib helloextendr, .registration = TRUE
 NULL
 
-#' Return string `"Hello world!"` to R.
+my_usize_r_name <- new.env(parent = emptyenv())
+
+my_usize_r_name$new <- function(x) .Call(wrap__my_usize_r_name__new, x)
+
+my_usize_r_name$print <- function() invisible(.Call(wrap__my_usize_r_name__print, self))
+
 #' @export
-hello_world <- function() .Call(wrap__hello_world)
+`$.my_usize_r_name` <- function (self, name) { func <- my_usize_r_name[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.my_usize_r_name` <- `$.my_usize_r_name`
 
 
 # nolint end
